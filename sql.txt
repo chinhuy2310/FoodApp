@@ -1,0 +1,55 @@
+CREATE TABLE IF NOT EXISTS users (
+    user_id int auto_increment primary key,
+    name varchar(20) not null,
+    account varchar(50) not null,
+    email varchar(50) not null,
+    password varchar(255) not null,  -- 길이를 255로 늘림
+    avatar_image text,
+    is_admin tinyint default 0 not null
+);
+
+CREATE TABLE IF NOT EXISTS posts (
+    post_id int auto_increment primary key,
+    category int not null,
+    is_recipe tinyint default 0 not null,
+    user_id int,
+    title varchar(255),
+    content text,
+    created_at timestamp default current_timestamp,
+    foreign key(user_id) references users(user_id) on delete cascade
+);
+
+CREATE TABLE IF NOT EXISTS images (
+    image_id int auto_increment primary key,
+    post_id int,
+    foreign key(post_id) references posts(post_id) on delete cascade
+);
+
+CREATE TABLE IF NOT EXISTS likes (
+    like_id int auto_increment primary key,
+    user_id int,
+    post_id int,
+    foreign key(user_id) references users(user_id) on delete cascade,
+    foreign key(post_id) references posts(post_id) on delete cascade
+);
+ALTER TABLE images ADD path text;
+CREATE TABLE IF NOT EXISTS comments (
+    comment_id int auto_increment primary key,
+    user_id int,
+    post_id int,
+    comment_content text not null,
+    created_at timestamp default current_timestamp,
+    foreign key(user_id) references users(user_id) on delete cascade,
+    foreign key(post_id) references posts(post_id) on delete cascade
+);
+
+ CREATE TABLE  advertisement (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+     advertisement_image VARCHAR(255) NOT NULL
+);
+
+INSERT INTO advertisement (advertisement_image) VALUES
+('https://img2.daumcdn.net/thumb/R658x0.q70/?fname=https://t1.daumcdn.net/news/202303/28/dailylife/20230328110003580sufq.jpg'),
+('https://static.hubzum.zumst.com/hubzum/2022/02/10/14/3ea39a0f140c44b8b26761a93d11aa18.jpg'),
+('https://dulichlive.com/han-quoc/wp-content/uploads/sites/7/2020/02/10-mon-an-Han-Quoc-khong-cay-ngon-noi-tieng.jpg'),
+('https://forza.com.vn/wp-content/uploads/2021/07/cach-lam-mi-y-thom-ngon-chuan-vi-tai-nha-6.jpeg');
